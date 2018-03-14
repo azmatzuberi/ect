@@ -1,0 +1,8 @@
+<button pButton class="ui-button-secondary" (click)="toggleVisible()" label="{{btnLabel}}" icon="fa-plus-circle"></button>
+
+
+
+<p-dialog #op class="ui-g-nopad" [minWidth]="'900'" appendTo="body" [showHeader]="false" [dismissableMask]="true" [(visible)]="visible" [modal]="true">
+  <app-add-source-from-pdf [source]="source"></app-add-source-from-pdf>
+</p-dialog>
+

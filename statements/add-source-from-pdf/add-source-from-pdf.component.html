@@ -1,0 +1,23 @@
+<section class="main ui-grid ui-g-12 ui-g-nopad extract-statements" *ngIf="source; else none">
+  <pre>
+{{source | json}}
+</pre>
+
+  <div class="ui-g-7 ui-g-nopad">
+    <dl>
+      <dt>Date</dt>
+      <dd>{{source.publishedOn ? (source.publishedOn | date)  : "Unknown"}}</dd>
+      <dt>Title</dt>
+      <dd>{{source.title}}</dd>
+    </dl>
+  </div>
+
+   <app-pdf-viewer-panel (selected)="setStatementText($event)" [url]="source.sourceUrl" class="ui-g-12 ui-g-nopad"></app-pdf-viewer-panel> 
+   <app-create-statement [statement]="statement" class="ui-g-5 ui-g-nopad"></app-create-statement> 
+</section>
+
+<ng-template #none>
+  <div class="ui-g-12">
+    Error: No item selected.
+  </div>
+</ng-template>

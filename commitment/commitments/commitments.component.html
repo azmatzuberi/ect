@@ -1,0 +1,13 @@
+<app-main-layout>
+  <ng-container sidebar-side>
+    <div class="ui-g-12 ui-g-nopad">
+      <app-query-commitment></app-query-commitment>
+    </div>
+  </ng-container>
+  <ng-container  left-side>
+    <app-view-all-commitments (commitments)="commitments" (itemSelected)="viewItem($event)"></app-view-all-commitments>
+  </ng-container >
+  <ng-container right-side>
+    <app-view-commitment (edit-complete)="refreshCommitments()" [commitment]="commitmentObservable | async" [loading]="loadingData" ></app-view-commitment>
+  </ng-container>
+</app-main-layout>

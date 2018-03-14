@@ -1,0 +1,67 @@
+<!-- [descriptionList]="statement.asDescriptionList()" -->
+<app-link-commitments [(visible)]="linkingVisible" (submitted)="toggleLinking()" [statement]="statement"></app-link-commitments>
+
+<app-item-view-layout [accordionTabHeader]="'Statement Details'" [displayTop]="commitment.statements.length == 1">
+  <ng-container top>
+    <div *ngIf="statement">
+      <div class="ui-g-9 ui-sm-12 ui-g-nopad">
+        <blockquote><i class="fa fa-quote-left" aria-hidden="true"></i> {{statement.description}} </blockquote>
+      </div>
+      <div class="ui-g-3 ui-sm-12">
+        <app-edit-statement-btn (done)="emitEditComplete()" class="float-right" [statement]="statement"></app-edit-statement-btn>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container accordion>
+    <div *ngIf="!loading; else loader">
+      <div *ngIf="statement">
+
+
+        <div *ngIf="commitment.statements.length == 1; else multiple">
+          <dl class="ui-g-12">
+            <dt>Date</dt>
+            <dd>{{statement.created | date }}</dd>
+
+            <dt>Context</dt>
+            <dd>{{statement.context || "Unknown"}}</dd>
+
+            <dt>Party</dt>
+            <dd>
+              <app-party-color-square [party]="statement.politicalParty"> </app-party-color-square>{{statement.politicalParty}}</dd>
+
+            <dt>Individual</dt>
+            <dd>{{statement.statementAuthor || "Unknown"}}</dd>
+          </dl>
+
+          <a *ngIf="statement.source" href="javascript:void(0)" (click)="viewSource(statement.source.sourceId)">Go to Source</a>
+        </div>
+        <ng-template #multiple>
+          <p>{{commitment.statements.length}} statements selected</p>
+        </ng-template>
+
+
+      </div>
+    </div>
+    <ng-template #loader>
+      <p-progressSpinner class="ui-g-2 ui-g-offset-5"></p-progressSpinner>
+    </ng-template>
+  </ng-container>
+  <ng-container panel-header>
+    Related Commitments
+
+  </ng-container>
+  <ng-container panel-body>
+    <div *ngIf="statement">
+      <div class="ui-g-12">
+        <app-create-commitment-btn (linkToExisting)="toggleLinking()" [disabled]="commitment.statements.length == 0" [commitment]="commitment "
+          pTooltip="Create new
+      from selected statements " class="float-right ">
+        </app-create-commitment-btn>
+      </div>
+      <app-commitment-listing *ngIf="commitment.statements.length==1 " [(commitments)]="statement.commitments" (commitmentsChange)="updateConnectedCommitments()"></app-commitment-listing>
+    </div>
+
+
+  </ng-container>
+
+</app-item-view-layout>

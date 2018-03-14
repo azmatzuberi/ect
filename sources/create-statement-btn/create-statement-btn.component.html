@@ -1,5 +1,0 @@
-<button pButton class="ui-button-secondary" (click)="toggleVisible()" label="{{btnLabel}}" icon="fa-plus-circle"></button>
-
-<p-dialog #op [dismissableMask]="true" width="600" appendTo="body" [showHeader]="false" [(visible)]="visible" [modal]="true">
-  <app-create-statement (close)="toggleVisible()"></app-create-statement>
-</p-dialog>

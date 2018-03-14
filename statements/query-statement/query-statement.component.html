@@ -1,0 +1,34 @@
+<div class="ui-g-12 ">
+  <h2>Filter Results <button pButton type="reset" label="Reset" (click)="reset()" icon="fa-refresh"></button></h2>
+  <form>
+    <div class="ui-grid-row">
+      <label class="ui-g-4">Text:</label>
+      <div class="ui-g-8">
+        <input type="text" class="ui-g-12" [(ngModel)]="queryObject.description" [formControl]="searchControl" pInputText placeholder="Search"
+        />
+      </div>
+    </div>
+    <div class="ui-grid-row">
+      <label class="ui-g-4">Context:</label>
+      <div class="ui-g-8">
+        <app-context-selector [(selectedValue)]="queryObject.context" (selectedValueChange)="onChange()"></app-context-selector>
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <label class="ui-g-4">Party:</label>
+      <div class="ui-g-8">
+        <app-party-picker-dropdown [(selectedValue)]="queryObject.politicalParty" (selectedValueChange)="onChange()"></app-party-picker-dropdown>
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <label class="ui-g-4">Year:</label>
+      <div class="ui-g-8">
+        
+        <app-year-selector [startYear]="startYear" [(selectedValue)]="queryObject.year" (selectedValueChange)="onChange()"></app-year-selector>
+      </div>
+    </div>
+
+  </form>
+</div>

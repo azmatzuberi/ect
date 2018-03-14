@@ -1,0 +1,73 @@
+<div appAriaBusy [ariaBusy]="loading">
+  <app-item-view-layout [accordionTabHeader]="'Commitment Details'" [displayTop]="'true'">
+    <ng-container *ngIf="commitment && commitment.id != '-1'" top>
+      <div class="ui-g-9 ui-sm-12 ui-g-nopad">
+        <blockquote><i class="fa fa-quote-left" aria-hidden="true"></i> {{commitment.text}} </blockquote>
+      </div>
+      <div class="ui-g-3 ui-sm-12">
+        <app-edit-commitment-btn class="float-right" (done)="emitEditComplete()" [commitment]="commitment"></app-edit-commitment-btn>
+      </div>
+    </ng-container>
+
+    <ng-container accordion>
+      <div *ngIf="!loading; else loader">
+
+        <dl class="ui-g-12" *ngIf="commitment && commitment.id != '-1';else empty">
+
+
+          <dt>Date</dt>
+          <dd>{{commitment.date | date}}</dd>
+
+          <dt>Context</dt>
+          <dd>{{commitment.context || "Unknown"}}</dd>
+
+          <dt>Party</dt>
+          <dd>
+            <app-party-color-square [party]="commitment.party"> </app-party-color-square>{{commitment.party}}
+          </dd>
+
+          <dt>Administration</dt>
+          <dd>{{commitment.administration || "Unknown"}}</dd>
+
+          <dt>Tags</dt>
+          <dd>
+            <span *ngFor="let tag of commitment.tags; let i = index">{{tag}}<span *ngIf="i < commitment.tags.length -1">, </span></span>
+          </dd>
+
+          <dt>Lead Ministries</dt>
+          <dd>
+            <span *ngFor="let ministry of commitment.leadMinistries; let i = index">{{ministry}}<span *ngIf="i < commitment.ministries.length -1">, </span></span>
+          </dd>
+
+
+          <dt>Supporting Ministries</dt>
+          <dd>
+            <span *ngFor="let ministry of commitment.supportingMinistries; let i = index">{{ministry}}<span *ngIf="i < commitment.ministries.length -1">, </span></span>
+          </dd>
+
+
+          <!-- <dt>Post lead/ supporting</dt>
+        <dd>{{commitment.administration}}</dd> -->
+        </dl>
+        <ng-template #empty>
+          Select an item to preview
+        </ng-template>
+      </div>
+      <ng-template #loader>
+        <p-progressSpinner class="ui-g-2 ui-g-offset-5"></p-progressSpinner>
+
+      </ng-template>
+    </ng-container>
+    <ng-container panel-header>
+      Related Statements
+    </ng-container>
+    <ng-container *ngIf="commitment && commitment.id != '-1'" panel-body>
+      <div class="ui-g-12 ui-g-nopad">
+        <app-link-statements [commitment]="commitment" class="float-right"></app-link-statements>
+      </div>
+      <app-statement-listing [(statements)]="commitment.statements" (statementsChange)="updateConnectedStatements()"></app-statement-listing>
+    </ng-container>
+
+  </app-item-view-layout>
+
+</div>
