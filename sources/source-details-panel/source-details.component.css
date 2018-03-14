@@ -1,0 +1,7 @@
+/* #dtt {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    max-width: 80px;
+} */

@@ -1,0 +1,12 @@
+<button pButton (click)="toggleVisible()" label="{{btnLabel}}" icon="fa-plus-circle"></button>
+
+
+
+<p-dialog #op [closable]="true" [contentStyle]="{'height':'90vh'}" class="ui-g-nopad" appendTo="body"  [dismissableMask]="false" [resizable]="true" [(visible)]="visible"
+  [modal]="true">
+  <p-header>
+    Add new Statement from Source
+  </p-header>
+
+  <app-add-statement-from-source [source]="source"></app-add-statement-from-source>
+</p-dialog>

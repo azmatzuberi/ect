@@ -1,0 +1,40 @@
+<div class="ui-g-12">
+  <div class="clearfix">
+    <h2 class="display-inline-block">Filter Results</h2>
+    <button pButton class="float-right mt-3" type="reset" label="Reset" (click)="reset()" icon="fa-refresh"></button>
+  </div>
+  <form>
+    <div class="ui-grid-row">
+      <label class="ui-g-4 b" for="search-bar">Name:</label>
+      <div class="ui-g-8">
+        <input id="search-bar" type="text" class="ui-g-12" [(ngModel)]="queryObject.sourceName" [formControl]="searchControl" pInputText placeholder="Search Source Name" />
+      </div>
+    </div>
+    <div class="ui-grid-row">
+      <div>
+        <label class="ui-g-4 b" for="filterContext">Context:</label>
+        <div class="ui-g-8">
+          <app-context-selector [(selectedValue)]="queryObject.context" (selectedValueChange)="onChange()"></app-context-selector>
+        </div>
+      </div>
+    </div>
+    <div class="ui-grid-row">
+      <label class="ui-g-4 b">Party:</label>
+      <div class="ui-g-8">
+        <app-party-picker-dropdown name="selectionParty" [(selectedValue)]="queryObject.politicalParty" (selectedValueChange)="onChange()"></app-party-picker-dropdown>
+      </div>
+    </div>
+    <div class="ui-grid-row">
+      <label class="ui-g-4 b" for="selectedType">Type:</label>
+      <div class="ui-g-8">
+        <app-source-types name="selectedType" [(selectedValue)]="queryObject.sourceType" (selectedValueChange)="onChange()"></app-source-types>
+      </div>
+    </div>
+    <div class="ui-grid-row">
+      <label class="ui-g-4 b" for="selectedYear">Year:</label>
+      <div class="ui-g-8">
+        <app-source-years name="selectedYear" [(selectedValue)]="queryObject.publishedDate" (selectedValueChange)="onChange()"></app-source-years>
+      </div>
+    </div>
+  </form>
+</div>

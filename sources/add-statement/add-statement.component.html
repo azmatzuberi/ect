@@ -1,0 +1,46 @@
+<form [formGroup]="statementForm" (ngSubmit)="onSubmit()">
+  <p-panel header="{{header}}" [toggleable]='false'>
+    <div class="ui-grid ui-grid-pad">
+      <section class="ui-g-12 statement-section">
+        <label for="statementText">Paste statement. <a href="javascript:void(0)" (click)="openSource()"><i class="fa fa-file-pdf-o"></i> Open source </a> to use "easy-copy"</label>
+        <textarea formControlName="statementText" class="ui-g-12 statement-text" id="statementText" name="statementText" [(ngModel)]="statement.description"
+          pInputTextarea></textarea>
+
+        <div class=" ui-g-8 float-right">
+          <div class="ui-g-6 clear-padding clear-margin-bottom">
+            <label for="pageNumber" class="ui-g-12 center clear-padding">Page</label>
+            <input id="pageNumber" class="ui-g-12 " formControlName="pageNumber" type="number" pInputText [(ngModel)]="source.pageNumber"
+              placeholder="Page #" />
+
+          </div>
+
+          <div class="ui-g-6 clear-padding clear-margin-bottom">
+            <label for="lineNumber" class="ui-g-12 center clear-padding">Line</label>
+            <input id="lineNumber" class="ui-g-12" formControlName="lineNumber" type="number" pInputText [(ngModel)]="source.lineNumber"
+              placeholder="Line #" />
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="ui-grid ui-grid-pad  tag-section">
+      <section class="ui-g-row center">
+
+        <p-multiSelect [options]="tagList" [defaultLabel]="'Add/Remove Tag(s)'" [style]="{'width':'100%'}"></p-multiSelect>
+        <!-- <button class="ui-g-12 inline ui-button-secondary" type="button" pButton label="" (click)="tags.toggle($event)"></button>
+        <ul class=" ui-g-12 inline" *ngIf="numSelected > 0">
+          <li class="inline" *ngFor="let tag of tagList | fieldTrue: 'selected'; let i = index"><span *ngIf="i > 0">, </span>{{tag.tag}}</li>
+        </ul>
+        <p *ngIf="numSelected == 0" class="ui-g-12 ">No tags selected</p> -->
+
+      </section>
+
+    </div>
+
+    <p-footer class="clear-padding" [style]="{'padding': 0}">
+      <div class="ui-dialog-buttonpane ui-helper-clearfix ui-g-row clear-padding ui-rtl" dir="rtl">
+        <button pButton type="submit" [disabled]="!statementForm.valid" class="next-button ui-g-12" icon="fa-chevron-right" iconPos="right"
+          label="Next Statement"></button>
+      </div>
+    </p-footer>
+  </p-panel>
+</form>

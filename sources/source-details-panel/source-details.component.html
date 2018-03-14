@@ -1,0 +1,161 @@
+<app-item-view-layout [accordionTabHeader]="'Source Details'">
+    <ng-container top>
+        <div *ngIf="source">
+            <div class="ui-g-9 ui-sm-12 ui-g-nopad">
+                <h2 class="sr-only">Source Details</h2>
+                <p id="sourceNameQuote" class="sr-only">Source Name:</p>
+                <blockquote class="main-blockquote" aria-labelledby="sourceNameQuote">
+                    <i class="fa fa-quote-left" aria-hidden="true"></i> {{source.sourceName}} 
+                </blockquote>
+            </div>
+            <div class="ui-g-3 ui-sm-12">
+                <button class="float-right" type="button" pButton icon="fa-edit" (click)="onSourceEdit(source)" label="Edit" title="Edit this Source"></button>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container accordion>
+        <dl class="listing" *ngIf="source;else empty">
+            <div *ngIf="sourceVisibility">
+                <dt>Date Published</dt>
+                <dd>{{ pDate }}</dd>
+
+                <dt>Context</dt>
+                <dd>{{source.context}}</dd>
+
+                <dt>Party</dt>
+                <dd *ngIf="source.politicalParty">
+                    <app-party-color-square [party]="source.politicalParty" (selectedValueChange)="onChange()"></app-party-color-square>{{source.politicalParty}}
+                </dd>
+
+                <dt>Individual</dt>
+                <dd>{{source.individual}}</dd>
+
+                <!-- <dt>Administration</dt>
+                <dd>{{source.administration}}</dd> -->
+
+                <dt>Source Type</dt>
+                <dd>{{source.sourceType}}</dd>
+
+                <dt>Source Weblink</dt>
+                <dd style="overflow: hidden">
+                    <a href="{{source.sourceWebLink}}">{{source.sourceWebLink}}</a>
+                </dd>
+
+                <dt>Source URL</dt>
+                <dd style="overflow: hidden">
+                    <a href="{{source.sourceUrl}}">{{source.sourceUrl}}</a>
+                </dd>
+
+                <dt>Source File</dt>
+                <dd><i class="fa fa-file" aria-hidden="true"></i> {{source.title}}</dd>
+            </div>
+        </dl>
+        <ng-template #empty>
+            <p>Select an item to preview</p>
+        </ng-template>
+    </ng-container>
+    <ng-container panel-header>
+        Related Statements
+    </ng-container>
+    <ng-container panel-body>
+        <div class="ui-g-12" *ngIf="source">
+            <app-add-statement-from-source-btn [source]="source" class="float-right"></app-add-statement-from-source-btn>
+        </div>
+        <div class="ui-g-12" *ngIf="source">
+            <div class="ui-widget-header no-bg ui-inputgroup">
+                <input #gb type="text" class="mb-2 ui-g-12 ng-pristine ng-valid" pInputText placeholder="Search Statements" />
+                <button pButton type="button" icon-pos="right" icon="fa-search" style="height:31px;"></button>
+            </div>
+            <p-dataTable *ngIf="statementVisibility" [value]="statements" [rows]="4" [paginator]="true" [(selection)]="selectedSource"
+                emptyMessage="No statements found" [globalFilter]="gb" #dt>
+                <p-column field="created" header="Date" [style]="{'width': '100px'}">
+                    <ng-template pTemplate="body" let-col let-row="rowData" let-ri="rowIndex">
+                        <span>{{ row[col.field] | date: 'mediumDate' }}</span>
+                    </ng-template>
+                </p-column>
+                <p-column field="description" header="Description">
+                    <ng-template let-col let-row="rowData" let-ri="rowIndex" pTemplate="body">
+                        <span #z>{{ row[col.field] | truncate:[150] }}</span>
+                        <app-truncate-expander [text]="row[col.field]"></app-truncate-expander>
+                        <!-- <app-truncate-expander [text]="row[col.field]"></app-truncate-expander> -->
+                    </ng-template>
+                </p-column>
+            </p-dataTable>
+        </div>
+    </ng-container>
+</app-item-view-layout>
+
+<p-overlayPanel #op>
+    <div *ngIf="selectedStatement">
+        <div>{{ selectedStatement.description }}</div>
+    </div>
+</p-overlayPanel>
+
+<p-dialog header="Edit Source" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" width="600" [contentStyle]="{'overflow':'visible'}">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="source">
+        <div class="ui-grid-row">
+            <label for="date" class="ui-g-4 b">Date Published:</label>
+            <div class="ui-g-8">
+                <p-calendar [showIcon]="true" id="date" dateFormat="M dd, yy" (onSelect)="saveDate($event)" [(ngModel)]="pDate"></p-calendar>
+            </div>
+        </div>
+        <div class="ui-grid-row">
+            <label for="context" class="ui-g-4 b">Context:</label>
+            <div class="ui-g-8"><app-context-selector id="context" [(selectedValue)]="source.context"></app-context-selector></div>
+        </div>
+        <div class="ui-grid-row">
+            <label for="party" class="ui-g-4 b">Party:</label>
+            <div class="ui-g-8">
+                <app-party-picker-dropdown id="party" name="selectionParty" [(selectedValue)]="source.politicalParty"></app-party-picker-dropdown>
+            </div>
+        </div>
+        <!-- <div class="ui-grid-row">
+            <label for="administration" class="ui-g-4 b">Administration:</label>
+            <div class="ui-g-8">
+                <app-administration-selector id="administration" [(selectedValue)]="source.administration"></app-administration-selector>
+            </div>
+        </div> -->
+        <div class="ui-grid-row">
+            <label for="individual" class="ui-g-4 b">Individual:</label>
+            <div class="ui-g-8">
+                <input class="ui-g-12 ui-g-nopad" pInputText id="individual" [(ngModel)]="source.individual">
+            </div>
+        </div>
+        <div class="ui-grid-row2">
+            <label for="type" class="ui-g-4 b">Source Type:</label>
+            <div class="ui-g-8">
+                <app-source-types id="type" [(selectedValue)]="source.sourceType" ></app-source-types>
+            </div>
+        </div>
+        <label for="name" class="ui-g-4 b">Source Name:</label>
+        <div class="ui-g-8">
+            <input class="ui-g-12 ui-g-nopad" pInputText id="name" [(ngModel)]="source.sourceName" />
+        </div>
+        <div class="ui-grid-row">
+            <label for="sourceWebLink" class="ui-g-4 b">Source Weblink:</label>
+            <div class="ui-g-8"><input class="ui-g-12 ui-g-nopad" pInputText id="sourceWebLink" [(ngModel)]="source.sourceWebLink" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <label class="ui-g-4 b" for="sourceUrl">Source Url:</label>
+            <div class="ui-g-8">
+                <input class="ui-g-12 ui-g-nopad" pInputText id="sourceUrl" [(ngModel)]="source.sourceUrl" />
+            </div>
+        </div>
+        <div class="ui-grid-row">
+            <label class="ui-g-4 b" for="file">Source File:</label>
+            <div class="ui-g-8">{{ source.title }}</div>     
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-g-4"></div>
+            <div class="ui-g-8">
+                <p-fileUpload type="file" id="file" mode="basic" name="myfile[]" url=""
+                    maxFileSize="1000000" (change)="getFileDetails($event)"></p-fileUpload>
+            </div>
+        </div>       
+    </div>
+    <p-footer class="clearfix">
+        <button pButton type="button" icon="fa-trash" (click)="confirmDeleteSource($event)" label="Delete" class="float-left ui-button-danger"></button>
+        <button pButton type="button" icon="fa-check" (click)="save($event); updateSourceVisibility()" label="Save"></button>
+        <button pButton type="button" icon="fa-ban" (click)="cancel()" label="Cancel" class="ui-button-secondary"></button>
+    </p-footer> 
+</p-dialog>
