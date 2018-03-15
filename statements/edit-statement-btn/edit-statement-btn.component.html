@@ -1,6 +1,0 @@
-<button pButton (click)="toggleVisible()" label="{{btnLabel}}" icon="fa-edit"></button>
-
-<p-dialog #op class="ui-g-nopad" appendTo="body" header="Edit Statement" [minWidth]="700" [responsive]="true" [contentStyle]="{'overflow':'visible',  'padding': '0'}"
-  [dismissableMask]="false" [(visible)]="visible" [modal]="true">
-  <app-create-statement [showHeader]="false" [edit-mode]="'true'" [statement]="statement" (done)="complete()" (cancel)="canceled($event)"></app-create-statement>
-</p-dialog>
